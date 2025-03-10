@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> 
     </parent>
     <groupId>com.example</groupId>
     <artifactId>CrudOperation</artifactId>
@@ -30,7 +30,7 @@
         <java.version>17</java.version>
     </properties>
     
-    <!-- Dépendances pour le projet -->
+    
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -55,7 +55,7 @@
             <scope>test</scope>
         </dependency>
         
-        <!-- Dépendance Checkstyle -->
+        <!-- Checkstyle -->
         <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
@@ -64,7 +64,7 @@
         </dependency>
     </dependencies>
 
-    <!-- Configuration des plugins Maven -->
+    <!-- Maven -->
     <build>
         <plugins>
             <plugin>
@@ -79,7 +79,7 @@
                 <version>3.6.0</version>
                 <executions>
                     <execution>
-                        <phase>verify</phase> <!-- Exécution pendant la phase verify -->
+                        <phase>verify</phase> 
                         <goals>
                             <goal>checkstyle</goal>
                         </goals>
@@ -89,7 +89,7 @@
         </plugins>
     </build>
 
-    <!-- Reporting pour Checkstyle -->
+    <!-- Reporting for Checkstyle -->
     <reporting>
         <plugins>
             <plugin>

@@ -1,48 +1,46 @@
 pipeline {
     agent { label 'server-developement' }
     tools {
-        maven "MAVEN"
+        maven "MAVEN"  // Ensure "MAVEN" is the name configured in Global Tool Configuration
     }
 
-    // parameters {
-    //     string(name: 'TARGET_USER', defaultValue: 'user', description: 'SSH User for the target machine')
-    //     string(name: 'TARGET_IP', defaultValue: '0.0.0.0', description: 'IP Address of the target machine')
-    //     string(name: 'TARGET_DIR', defaultValue: '/path/to/deployment/directory', description: 'Deployment directory on the target machine')
-    // }
-
-    // environment {
-    //     TARGET_MACHINE = "${params.TARGET_USER}@${params.TARGET_IP}"
-    // }
-
     stages {
-    // stage('Checkout') {
-    //     steps {
-    //         git url: 'https://gitlab.com/jenkins5523910/Ehealth_backend_package_dev.git', branch: 'main'
-    //     }
-    //}
+        stage('Checkout') {
+            steps {
+                // Use the correct repository URL
+                git url: 'https://github.com/SofianHaidour/E-Health_Jenkins.git', branch: 'main'
+            }
+        }
 
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+                // Run Maven build (skip tests for faster builds, can be modified based on your need)
+                sh 'mvn -B -DskipTests clean package'
             }
         }
-
-        // stage('Deploy') {
-        //     steps {
-        //         sh '''
-        //         JAR_FILE=target/ehealth-back-1.0.jar
-        //         scp $JAR_FILE $TARGET_MACHINE:$TARGET_DIR
-        //         ssh $TARGET_MACHINE "cd $TARGET_DIR && java -jar $JAR_FILE"
-        //         '''
-        //     }
-        // }
 
         stage('Static Analysis') {
             steps {
-                recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [pmdParser(), checkStyle(), findBugs()]
+                // Ensure the static analysis tools are correctly installed and configured in Jenkins
+                recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [checkStyle(), pmdParser(), findBugs()]
             }
         }
+
+        // Uncomment this stage if you want to deploy after building
+        /*
+        stage('Deploy') {
+            steps {
+                // Example of deployment using SCP and SSH (adjust to your needs)
+                sh '''
+                JAR_FILE=target/ehealth-back-1.0.jar
+                scp $JAR_FILE $TARGET_MACHINE:$TARGET_DIR
+                ssh $TARGET_MACHINE "cd $TARGET_DIR && java -jar $JAR_FILE"
+                '''
+            }
+        }
+        */
     }
+
     post {
         success {
             echo 'Deployment successful!'
@@ -50,6 +48,5 @@ pipeline {
         failure {
             echo 'Deployment failed!'
         }
-
     }
 }
